@@ -1,12 +1,14 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai'
-import {Contract} from 'ethers'
+// import {Contract} from 'ethers'
+import {Token} from '../typechain/Token'
 import { ethers } from 'hardhat';
 
-describe('Token contract', ()=>{
-    console.log('test:', ethers)
+import {Token__factory} from '../typechain/factories/Token__factory'
 
-    let Token, token:Contract, owner:SignerWithAddress, addr1:SignerWithAddress, addr2:SignerWithAddress;
+describe('Token contract', ()=>{
+
+    let Token:Token__factory, token:Token, owner:SignerWithAddress, addr1:SignerWithAddress, addr2:SignerWithAddress;
 
     beforeEach(async ()=>{
         Token = await ethers.getContractFactory('Token');
@@ -48,7 +50,7 @@ describe('Token contract', ()=>{
             await token.transfer(addr1.address, 100);
             await token.transfer(addr2.address, 50);
             const finalOwnerBalance = await token.balanceOf(owner.address);
-            expect(finalOwnerBalance).to.equal(initialOwnerBalance - 150);
+            expect(finalOwnerBalance).to.equal(+initialOwnerBalance - 150);
             
             const addr1Balance = await token.balanceOf(addr1.address);
             expect(addr1Balance).to.equal(100);
